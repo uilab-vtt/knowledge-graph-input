@@ -1,12 +1,23 @@
-## Video Knowledge Builder
+Knowledge Graph Input
+=====================
 
-This is an application that takes *JSONLines* formatted video label dataset as input and
-builds context dependent knowledge base.
+This project defines the data format of the `video_label`s, 
+which are accepted as a input data for the [Knowledge Graph Builder](https://github.com/uilab-vtt/knowledge-graph-builder) project.
 
-### Input format
+Since Knowledge Graph Builder takes [JSONLines](http://jsonlines.org/) file 
+that is composed of `video_label` objects only, 
+please validate your input data file before using with Knowledge Graph Builder.
 
-Input data must be JSONLines that contains multiple JSON objects in one of the
-formats below.
+## Definition of the `video_label` object
+
+The main purpose of this project is to define the data format of `video_label` object. 
+This section contains both formal and informal definition of this object.
+
+### Description
+
+A `video_label` object should follow one of the following 6 types of the objects.
+
+#### Video label objects
 
 **Object**
 
@@ -15,15 +26,15 @@ formats below.
 
 **Behavior**
 
-* `{"type": "behavior", "class": "stand", "seconds": 15.0, "object": Object}`
+* `{"type": "behavior", "class": "stand", "seconds": 15.0, "object": ObjectIndicator}`
 
 **Emotion**
 
-* `{"type": "emotion", "class": "happy", "seconds": 15.0, "object": Object}`
+* `{"type": "emotion", "class": "happy", "seconds": 15.0, "object": ObjectIndicator}`
 
 **Relation**
 
-* `{"type": "relation", "class": RelationalClass, "subclass": "wear", "seconds": 15.0, "source": Object, "target": Object}`
+* `{"type": "relation", "class": RelationalClass, "subclass": "wear", "seconds": 15.0, "source": ObjectIndicator, "target": ObjectIndicator}`
 
 **Location**
 
@@ -33,7 +44,9 @@ formats below.
 
 * `{"type": "sound", "class": "glass_crashing", "seconds": 15.0}`
 
-*Object*
+#### Sub-objects in video label objects
+
+*ObjectIndicator*
 
 * `{"id": "person_ross_geller"}` or
 * `{"coordinates": [100, 200, 20, 30]}`
@@ -45,14 +58,10 @@ formats below.
 * `"position"` for subclass `"above"`, `"below"`, `"next_to"`, …
 * `"social"` for subclass `"son_of"`, `"father_of"`, `"lover_of"`, `"friend_of"`, …
 
-### How to use
+### Formal definition
 
-`main.py` takes input data as standard input, and prints result knowledge base as
-standard output as a JSONLines formatted string. For example:
+TBD
 
-```
-video-knowledge-builder $ python main.py < test_input.jsonlines > output.jsonlines
-```
+## Validation of the input data file
 
-The shell command above will provide the contents of `test_input.jsonlines` as
-input for the application and save the result in a file `output.jsonlines`.
+
