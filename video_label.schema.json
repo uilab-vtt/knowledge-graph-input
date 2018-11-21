@@ -1,0 +1,281 @@
+{
+    "definitions": {
+        "video_id": {
+            "type": "string"
+        },
+        "video_coordinates": {
+            "type": "array",
+            "description": "An array object that denotes the box of a certain location and a certain size in the video.",
+            "examples": [
+                [
+                    100,
+                    200,
+                    20,
+                    30
+                ]
+            ],
+            "items": [
+                {
+                    "type": "number",
+                    "description": "A number value that denotes x coordinate of the box."
+                },
+                {
+                    "type": "number",
+                    "description": "A number value that denotes y coordinate of the box."
+                },
+                {
+                    "type": "number",
+                    "description": "A number value that denotes width of the box."
+                },
+                {
+                    "type": "number",
+                    "description": "A number value that denotes height of the box."
+                }
+            ]
+        },
+        "video_seconds": {
+            "type": "number",
+            "description": "A time passed from the start of the video when this label is valid in the video."
+        },
+        "video_object_id_indicator": {
+            "type": "object",
+            "description": "An object that indicates an object in the video with object's id.",
+            "examples": [
+                {
+                    "id": "person_ross_geller"
+                }
+            ],
+            "properties": {
+                "id": {
+                    "$ref": "#/definitions/video_id"
+                }
+            },
+            "required": ["id"]
+        },
+        "video_object_coordinates_indicator": {
+            "type": "object",
+            "description": "An object that indicates an object in the video with object's coordinates.",
+            "examples": [
+                {
+                    "coordinates": [
+                        100,
+                        200,
+                        20,
+                        30
+                    ]
+                }
+            ],
+            "properties": {
+                "coordinates": {
+                    "$ref": "#/definitions/video_coordinates"
+                }
+            },
+            "required": ["coordinates"]
+        },
+        "video_object_indicator": {
+            "description": "An object that indicates an object in the video.",
+            "oneOf": [
+                {
+                    "$ref": "#/definitions/video_object_id_indicator"
+                },
+                {
+                    "$ref": "#/definitions/video_object_coordinates_indicator"
+                }
+            ]
+        },
+        "video_object": {
+            "type": "object",
+            "description": "An object that describes an object in the video.",
+            "examples": [
+                {
+                    "type": "object",
+                    "class": "person",
+                    "label": "Person A",
+                    "seconds": 15.0,
+                    "coordinates": [
+                        100,
+                        200,
+                        20,
+                        30
+                    ]
+                },
+                {
+                    "type": "object",
+                    "id": "person_ross_geller",
+                    "class": "person",
+                    "label": "Ross Geller",
+                    "seconds": 15.0,
+                    "coordinates": [
+                        100,
+                        200,
+                        20,
+                        30
+                    ]
+                }
+            ],
+            "properties": {
+                "type": {
+                    "enum": ["object"]
+                },
+                "id": {
+                    "$ref": "#/definitions/video_id"
+                },
+                "class": {
+                    "type": "string"
+                },
+                "label": {
+                    "type": "string"
+                },
+                "seconds": {
+                    "$ref": "#/definitions/video_seconds"
+                },
+                "coordinates": {
+                    "$ref": "#/definitions/video_coordinates"
+                }
+            },
+            "required": ["type", "class", "label", "seconds", "coordinates"]
+        },
+        "video_behavior": {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "enum": ["behavior"]
+                },
+                "class": {
+                    "type": "string"
+                },
+                "seconds": {
+                    "$ref": "#/definitions/video_seconds"
+                },
+                "object": {
+                    "$ref": "#/definitions/video_object_indicator"
+                }
+            },
+            "required": [
+                "type",
+                "class",
+                "seconds",
+                "object"
+            ]
+        },
+        "video_emotion": {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "enum": ["emotion"]
+                },
+                "class": {
+                    "type": "string"
+                },
+                "seconds": {
+                    "$ref": "#/definitions/video_seconds"
+                },
+                "object": {
+                    "$ref": "#/definitions/video_object_indicator"
+                }
+            },
+            "required": [
+                "type",
+                "class",
+                "seconds",
+                "object"
+            ]
+        },
+        "video_relation": {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "enum": ["relation"]
+                },
+                "class": {
+                    "enum": [
+                        "behavior",
+                        "emotion",
+                        "position",
+                        "social"
+                    ]
+                },
+                "subclass": {
+                    "type": "string"
+                },
+                "seconds": {
+                    "$ref": "#/definitions/video_seconds"
+                },
+                "source": {
+                    "$ref": "#/definitions/video_object_indicator"
+                },
+                "target": {
+                    "$ref": "#/definitions/video_object_indicator"
+                }
+            },
+            "required": [
+                "type",
+                "class",
+                "subclass",
+                "seconds",
+                "source",
+                "target"
+            ]
+        },
+        "video_location": {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "enum": ["location"]
+                },
+                "class": {
+                    "type": "string"
+                },
+                "seconds": {
+                    "$ref": "#/definitions/video_seconds"
+                }
+            },
+            "required": [
+                "type",
+                "class",
+                "seconds"
+            ]
+        },
+        "video_sound": {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "enum": ["sound"]
+                },
+                "class": {
+                    "type": "string"
+                },
+                "seconds": {
+                    "$ref": "#/definitions/video_seconds"
+                }
+            },
+            "required": [
+                "type",
+                "class",
+                "seconds"
+            ]
+        }
+    },
+    "title": "Video Label",
+    "description": "A label object that contains a knowledge about a video file.",
+    "oneOf": [
+        {
+            "$ref": "#/definitions/video_object"
+        },
+        {
+            "$ref": "#/definitions/video_behavior"
+        },
+        {
+            "$ref": "#/definitions/video_emotion"
+        },
+        {
+            "$ref": "#/definitions/video_relation"
+        },
+        {
+            "$ref": "#/definitions/video_location"
+        },
+        {
+            "$ref": "#/definitions/video_sound"
+        }
+    ]
+}
