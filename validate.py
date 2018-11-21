@@ -23,7 +23,7 @@ def main():
             validate(obj, schema)
         except ValidationError as e:
              sys.stderr.write(
-                'Validation error at line %d:\n%s\n' % (i, e))
+                'Validation error at line %d:\n"%s"\n' % (i, json.dumps(obj)))
     print('Done.')
 
 if __name__ == '__main__':
