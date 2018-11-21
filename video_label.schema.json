@@ -1,7 +1,30 @@
 {
+    "title": "Video Label",
+    "description": "A label object that contains a knowledge about a video file.",
+    "oneOf": [
+        {
+            "$ref": "#/definitions/video_object"
+        },
+        {
+            "$ref": "#/definitions/video_behavior"
+        },
+        {
+            "$ref": "#/definitions/video_emotion"
+        },
+        {
+            "$ref": "#/definitions/video_relation"
+        },
+        {
+            "$ref": "#/definitions/video_location"
+        },
+        {
+            "$ref": "#/definitions/video_sound"
+        }
+    ],
     "definitions": {
-        "video_id": {
-            "type": "string"
+        "video_object_id": {
+            "type": "string",
+            "description": "A string value that denotes the object that the corresponding label indicates."
         },
         "video_coordinates": {
             "type": "array",
@@ -47,7 +70,7 @@
             ],
             "properties": {
                 "id": {
-                    "$ref": "#/definitions/video_id"
+                    "$ref": "#/definitions/video_object_id"
                 }
             },
             "required": ["id"]
@@ -118,37 +141,78 @@
                     "enum": ["object"]
                 },
                 "id": {
-                    "$ref": "#/definitions/video_id"
+                    "$ref": "#/definitions/video_object_id"
                 },
                 "class": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "A string value that indicates the class of the object.",
+                    "examples": [
+                        "person",
+                        "furniture",
+                        "building",
+                        "tree",
+                        "car"
+                    ]
                 },
                 "label": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "A string value that describes the object.",
+                    "examples": [
+                        "Ross Geller",
+                        "Black umbrella",
+                        "Porsche",
+                        "Unknown building"
+                    ]
                 },
                 "seconds": {
                     "$ref": "#/definitions/video_seconds"
                 },
                 "coordinates": {
-                    "$ref": "#/definitions/video_coordinates"
+                    "$ref": "#/definitions/video_coordinates",
+                    "description": "A box that indicates the object in the video."
                 }
             },
             "required": ["type", "class", "label", "seconds", "coordinates"]
         },
         "video_behavior": {
             "type": "object",
+            "description": "An object that describes a behavior of an object in the video.",
+            "examples": [
+                {
+                    "type": "behavior",
+                    "class": "stand",
+                    "seconds": 15.0,
+                    "object": {
+                        "coordinates": [
+                            100,
+                            200,
+                            20,
+                            30
+                        ]
+                    }
+                }
+            ],
             "properties": {
                 "type": {
                     "enum": ["behavior"]
                 },
                 "class": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "A string value that indicates the class of the behavior.",
+                    "examples": [
+                        "stand",
+                        "grab",
+                        "hold",
+                        "hit",
+                        "run"
+                    ]
                 },
                 "seconds": {
                     "$ref": "#/definitions/video_seconds"
                 },
                 "object": {
-                    "$ref": "#/definitions/video_object_indicator"
+                    "$ref": "#/definitions/video_object_indicator",
+                    "description": "An object that does this behavior in the video"
                 }
             },
             "required": [
@@ -159,19 +223,38 @@
             ]
         },
         "video_emotion": {
+            "description": "An object that describes an emotion of an object in the video.",
+            "examples": [
+                {
+                    "type": "emotion",
+                    "class": "happy",
+                    "seconds": 15.0,
+                    "object": {
+                        "id": "person_ross_geller"
+                    }
+                }
+            ],
             "type": "object",
             "properties": {
                 "type": {
                     "enum": ["emotion"]
                 },
                 "class": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "A string value that indicates the class of the emotion.",
+                    "examples": [
+                        "happy",
+                        "sad",
+                        "love",
+                        "angry"
+                    ]
                 },
                 "seconds": {
                     "$ref": "#/definitions/video_seconds"
                 },
                 "object": {
-                    "$ref": "#/definitions/video_object_indicator"
+                    "$ref": "#/definitions/video_object_indicator",
+                    "description": "An object that has this emotion in the video."
                 }
             },
             "required": [
@@ -182,6 +265,21 @@
             ]
         },
         "video_relation": {
+            "desciption": "An object that describes a relation between objects in the video.",
+            "examples": [
+                {
+                    "type": "relation",
+                    "class": "behavior",
+                    "subclass": "wear",
+                    "seconds": 15.0,
+                    "source": {
+                        "id": "person_ross_geller"
+                    },
+                    "target": {
+                        "id": "blue_jacket_1"
+                    }
+                }
+            ],
             "type": "object",
             "properties": {
                 "type": {
@@ -193,19 +291,34 @@
                         "emotion",
                         "position",
                         "social"
-                    ]
+                    ],
+                    "description": "A string value that indicates the class of the relation.",
                 },
                 "subclass": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "A string value that indicates the detailed class of the relation.",
+                    "examples": [
+                        "grab",
+                        "wear",
+                        "open",
+                        "love",
+                        "like",
+                        "above",
+                        "below",
+                        "son_of",
+                        "father_of"
+                    ]
                 },
                 "seconds": {
                     "$ref": "#/definitions/video_seconds"
                 },
                 "source": {
-                    "$ref": "#/definitions/video_object_indicator"
+                    "$ref": "#/definitions/video_object_indicator",
+                    "description": "An object that is a source of this relation in the video."
                 },
                 "target": {
-                    "$ref": "#/definitions/video_object_indicator"
+                    "$ref": "#/definitions/video_object_indicator",
+                    "description": "An object that is a target of this relation in the video."
                 }
             },
             "required": [
@@ -218,13 +331,27 @@
             ]
         },
         "video_location": {
+            "description": "An object that describes a physical location that shows in the video",
+            "examples": [
+                {
+                    "type": "location",
+                    "class": "central_perk",
+                    "seconds": 15.0
+                }
+            ],
             "type": "object",
             "properties": {
                 "type": {
                     "enum": ["location"]
                 },
                 "class": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "A string value that indicates the class of the location.",
+                    "examples": [
+                        "central_perk",
+                        "monica_house",
+                        "hospital"
+                    ]
                 },
                 "seconds": {
                     "$ref": "#/definitions/video_seconds"
@@ -237,13 +364,28 @@
             ]
         },
         "video_sound": {
+            "description": "An object that describes a sound that is included in the video.",
+            "examples": [
+                {
+                    "type": "sound",
+                    "class": "glass_crashing",
+                    "seconds": 15.0
+                }
+            ],
             "type": "object",
             "properties": {
                 "type": {
                     "enum": ["sound"]
                 },
                 "class": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "A string value that indicates the class of the sound.",
+                    "examples": [
+                        "glass_crashing",
+                        "indistict_conversation",
+                        "tire_screech",
+                        "people_scream"
+                    ]
                 },
                 "seconds": {
                     "$ref": "#/definitions/video_seconds"
@@ -255,27 +397,5 @@
                 "seconds"
             ]
         }
-    },
-    "title": "Video Label",
-    "description": "A label object that contains a knowledge about a video file.",
-    "oneOf": [
-        {
-            "$ref": "#/definitions/video_object"
-        },
-        {
-            "$ref": "#/definitions/video_behavior"
-        },
-        {
-            "$ref": "#/definitions/video_emotion"
-        },
-        {
-            "$ref": "#/definitions/video_relation"
-        },
-        {
-            "$ref": "#/definitions/video_location"
-        },
-        {
-            "$ref": "#/definitions/video_sound"
-        }
-    ]
+    }
 }
