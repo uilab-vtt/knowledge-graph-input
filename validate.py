@@ -24,7 +24,7 @@ def main():
         except ValidationError as e:
              sys.stderr.write(
                 'Validation error at line %d:\n%s\n' % (i, e))
-    print('Validation done.')
+    print('Done.')
 
 if __name__ == '__main__':
     main()
