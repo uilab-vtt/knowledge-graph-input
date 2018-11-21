@@ -91,3 +91,13 @@ Example command will validate the test input data file `test_input.jsonl`.
 (env) knowledge-graph-input$ python3 validate.py < test_input.jsonl
 Done.
 ```
+
+If there are errors in the input data, erronous lines are shown on the terminal as standard error output. 
+```bash
+(env) knowledge-graph-input jeongmin$ python3 validate.py < test_input.jsonl
+Validation error at line 3:
+"{"type": "locational", "class": "central_perk", "seconds": 0.5}"
+Validation error at line 14:
+"{"type": "behavior", "seconds": 2.5, "object": {"id": "person_ross_geller"}}"
+Done.
+```
