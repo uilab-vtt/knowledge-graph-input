@@ -60,8 +60,34 @@ A `video_label` object should follow one of the following 6 types of the objects
 
 ### Formal definition
 
-TBD
+A formal definition of the `video_label` object can be found in 
+[video_label.schema.json](https://github.com/uilab-vtt/knowledge-graph-input/blob/master/video_label.schema.json) file.
+This file defines the format of the `video_label` object in [JSON Schema](https://json-schema.org/).
 
 ## Validation of the input data file
 
+This project includes a basic validator script to check if a given jsonlines file is a valid input data for Knowledge Graph Builder. Instructions for using the validator is as follows.
 
+Before using the validator, make sure that Python 3 is available in your local environment.
+
+Set up a virtual environment for Python 3. 
+```bash
+knowledge-graph-input$ python3 -m venv ./env
+```
+
+Activate the virtual environment to use.
+```bash
+knowledge-graph-input$ source ./env/bin/activate
+```
+
+Install required dependencies with Pip in your virtual environment.
+```bash
+(env) knowledge-graph-input$ pip install -r requirements.txt
+```
+
+Run `validate.py` script with your input data file as standard input.
+Example command will validate the test input data file `test_input.jsonl`.
+```bash
+(env) knowledge-graph-input$ python3 validate.py < test_input.jsonl
+Done.
+```
