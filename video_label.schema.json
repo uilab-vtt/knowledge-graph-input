@@ -292,7 +292,7 @@
                         "position",
                         "social"
                     ],
-                    "description": "A string value that indicates the class of the relation.",
+                    "description": "A string value that indicates the class of the relation."
                 },
                 "subclass": {
                     "type": "string",
